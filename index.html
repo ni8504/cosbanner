@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>City of Springfield Employees - Exclusive Membership Banner</title>
+
+  <!-- Include Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Reset default margins and paddings */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body and HTML */
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Banner Container */
+    .banner-container {
+      position: relative;
+      width: 100%;
+      min-height: 100vh; /* Allows expansion if content is taller than viewport */
+      overflow: hidden;
+      color: #fff;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* Background Image (Optional) */
+    .banner-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('YOUR_CITY_OF_SPRINGFIELD_BACKGROUND_IMAGE_URL');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.6); /* Darken image for text contrast */
+      z-index: 0;
+    }
+
+    /* Confetti Container */
+    .confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      background-color: #ff0;
+      opacity: 0.8;
+      animation-name: fall;
+      animation-iteration-count: 1;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+    }
+
+    /* Keyframes for Confetti Animation */
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Content Wrapper */
+    .banner-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    /* Headline */
+    .headline {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      margin-bottom: 0.5em;
+      line-height: 1.2;
+      color: #ffdf00; /* Bright gold accent */
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      padding: 0 20px;
+    }
+
+    /* Subheader */
+    .subheader {
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      margin-bottom: 1em;
+      line-height: 1.5;
+      padding: 0 20px;
+    }
+
+    .subheader strong {
+      color: #ffd700;
+    }
+
+    /* Info for special deal */
+    .deal-info {
+      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      margin-bottom: 1.5em;
+      line-height: 1.4;
+      padding: 0 20px;
+    }
+
+    .deal-info strong {
+      color: #ff9900; /* Another highlight color */
+    }
+
+    /* Countdown Timer (Hours, Minutes, Seconds Only) */
+    .countdown-timer {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 1em;
+    }
+
+    .countdown-timer div {
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+      padding: 10px 15px;
+      min-width: 60px;
+    }
+
+    .countdown-timer span {
+      display: block;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .countdown-timer label {
+      display: block;
+      font-size: clamp(0.7rem, 2vw, 0.9rem);
+      color: #ffdf00;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner-container">
+    <!-- Background Image -->
+    <div class="banner-background"></div>
+
+    <!-- Confetti Container -->
+    <div class="confetti"></div>
+
+    <!-- Content -->
+    <div class="banner-content">
+      <div class="headline">
+        Exclusive Open Enrollment Deal
+      </div>
+      <div class="subheader">
+        For <strong>City of Springfield</strong> Employees
+      </div>
+      <div class="deal-info">
+        Unlock our <strong>best membership prices ever</strong>
+        with easy <strong>payroll deduction</strong>—only during
+        <strong>Open Enrollment!</strong>
+      </div>
+
+      <!-- Countdown Timer (Hours, Minutes, Seconds Only) -->
+      <div class="countdown-timer">
+        <div>
+          <span id="hours">00</span>
+          <label>Hours</label>
+        </div>
+        <div>
+          <span id="minutes">00</span>
+          <label>Minutes</label>
+        </div>
+        <div>
+          <span id="seconds">00</span>
+          <label>Seconds</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Confetti & Countdown -->
+  <script>
+    /*********************
+     * Confetti Section  *
+     *********************/
+    const confettiContainer = document.querySelector('.confetti');
+    const confettiCount = 40; // Adjust confetti density
+    const confettiColors = [
+      '#ff0000', '#ff9900', '#ffff00', '#00ff00',
+      '#00ffff', '#0000ff', '#ff00ff', '#ff69b4'
+    ];
+
+    for (let i = 0; i < confettiCount; i++) {
+      const confettiPiece = document.createElement('div');
+      confettiPiece.classList.add('confetti-piece');
+
+      // Random color
+      const randomColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+      confettiPiece.style.backgroundColor = randomColor;
+
+      // Random position
+      confettiPiece.style.left = Math.random() * 100 + '%';
+      confettiPiece.style.top = '-10%';
+
+      // Random rotation
+      const rotation = Math.random() * 180 - 90; // -90 to 90 deg
+      confettiPiece.style.transform = `rotate(${rotation}deg)`;
+
+      // Random animation duration
+      const duration = Math.random() * 3 + 2; // 2 to 5 seconds
+      confettiPiece.style.animationDuration = duration + 's';
+
+      // Random animation delay
+      const delay = Math.random() * 3; // 0 to 3 seconds
+      confettiPiece.style.animationDelay = delay + 's';
+
+      // Append to container
+      confettiContainer.appendChild(confettiPiece);
+    }
+
+    /*******************************
+     * Countdown Timer (No Days)   *
+     *******************************/
+    // Example: Counting down to a specific end date/time
+    // Adjust 'MONTH DAY, YEAR HH:MM:SS' as needed
+    const openEnrollmentEnd = new Date('January 22, 2025 23:59:59').getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = openEnrollmentEnd - now;
+
+      if (distance <= 0) {
+        // Time's up, display all zeros
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        return;
+      }
+
+      // Calculate total hours, leftover minutes, leftover seconds
+      const hours = Math.floor(distance / (1000 * 60 * 60));
+      const leftoverAfterHours = distance % (1000 * 60 * 60);
+
+      const minutes = Math.floor(leftoverAfterHours / (1000 * 60));
+      const leftoverAfterMinutes = leftoverAfterHours % (1000 * 60);
+
+      const seconds = Math.floor(leftoverAfterMinutes / 1000);
+
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
