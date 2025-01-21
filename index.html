@@ -129,37 +129,6 @@
     .deal-info strong {
       color: #ff9900; /* Another highlight color */
     }
-
-    /* Countdown Timer (Hours, Minutes, Seconds Only) */
-    .countdown-timer {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 1em;
-    }
-
-    .countdown-timer div {
-      background-color: rgba(0, 0, 0, 0.5);
-      border-radius: 5px;
-      padding: 10px 15px;
-      min-width: 60px;
-    }
-
-    .countdown-timer span {
-      display: block;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      font-weight: bold;
-      color: #fff;
-    }
-
-    .countdown-timer label {
-      display: block;
-      font-size: clamp(0.7rem, 2vw, 0.9rem);
-      color: #ffdf00;
-      margin-top: 5px;
-      text-transform: uppercase;
-    }
   </style>
 </head>
 <body>
@@ -183,34 +152,12 @@
         with easy <strong>payroll deduction</strong>—only during
         <strong>Open Enrollment!</strong>
       </div>
-
-      <!-- Countdown Timer (Days, Hours, Minutes, Seconds Only) -->
-      <div class="countdown-timer">
-        <div>
-          <span id="days">00</span>
-          <label>Days</label>
-        </div>
-        <div>
-          <span id="hours">00</span>
-          <label>Hours</label>
-        </div>
-        <div>
-          <span id="minutes">00</span>
-          <label>Minutes</label>
-        </div>
-        <div>
-          <span id="seconds">00</span>
-          <label>Seconds</label>
-        </div>
-      </div>
+      <!-- Countdown Timer Removed -->
     </div>
   </div>
 
-  <!-- JavaScript for Confetti & Countdown -->
+  <!-- JavaScript for Confetti -->
   <script>
-    /*********************
-     * Confetti Section  *
-     *********************/
     const confettiContainer = document.querySelector('.confetti');
     const confettiCount = 40; // Adjust confetti density
     const confettiColors = [
@@ -226,7 +173,7 @@
       const randomColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
       confettiPiece.style.backgroundColor = randomColor;
 
-      // Random position
+      // Random position (horizontal only, starting above the banner)
       confettiPiece.style.left = Math.random() * 100 + '%';
       confettiPiece.style.top = '-10%';
 
@@ -245,47 +192,6 @@
       // Append to container
       confettiContainer.appendChild(confettiPiece);
     }
-
-    /*******************************
-     * Countdown Timer (No Days)   *
-     *******************************/
-    // Example: Counting down to a specific end date/time
-    // Adjust 'MONTH DAY, YEAR HH:MM:SS' as needed
-    const openEnrollmentEnd = new Date('January 23, 2025 23:59:59').getTime();
-
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = openEnrollmentEnd - now;
-
-      if (distance <= 0) {
-        // Time's up, display all zeros
-        document.getElementById('days').textContent    = '00';
-        document.getElementById('hours').textContent   = '00';
-        document.getElementById('minutes').textContent = '00';
-        document.getElementById('seconds').textContent = '00';
-        return;
-      }
-
-      // Convert total distance into days, leftover hours, leftover minutes, leftover seconds
-      const days    = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const leftoverAfterDays = distance % (1000 * 60 * 60 * 24);
-
-      const hours   = Math.floor(leftoverAfterDays / (1000 * 60 * 60));
-      const leftoverAfterHours = leftoverAfterDays % (1000 * 60 * 60);
-
-      const minutes = Math.floor(leftoverAfterHours / (1000 * 60));
-      const leftoverAfterMinutes = leftoverAfterHours % (1000 * 60);
-
-      const seconds = Math.floor(leftoverAfterMinutes / 1000);
-
-      document.getElementById('days').textContent    = String(days).padStart(2, '0');
-      document.getElementById('hours').textContent   = String(hours).padStart(2, '0');
-      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
   </script>
 </body>
 </html>
